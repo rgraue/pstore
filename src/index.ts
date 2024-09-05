@@ -90,7 +90,7 @@ const login = (pwd: string, pf: PassFile) => {
 
     console.log('goodbye');
   } catch (e) {
-    console.log(e);
+    // console.log(e); uncomment to debug
     console.log('goodbye');
   }
 })();
