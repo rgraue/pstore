@@ -5,7 +5,8 @@ import { password, input } from '@inquirer/prompts';
 import { findCheckEntry, initPassFile, Pass, PassFile } from './passfile';
 import { handleAdd, handleGet, handleList } from './handler';
 
-const dbPath = path.resolve(__dirname, 'db');
+const dbFolder = path.resolve(__dirname, 'db');
+const dbPath = dbFolder + "/db.json";
 
 const getPassFile = (): PassFile | null => {
   try {
@@ -22,11 +23,11 @@ const makeNewPassFile = async (): Promise<PassFile> => {
   const pwd = await password({ message: 'enter master password', mask: '*' });
   const init = initPassFile(pwd);
 
-  if (!fs.existsSync(dbPath)) {
-    fs.mkdirSync(dbPath);
+  if (!fs.existsSync(dbFolder)) {
+    fs.mkdirSync(dbFolder);
   }
 
-  await fs.writeFileSync(dbPath + '/db.json', JSON.stringify(init));
+  await fs.writeFileSync(dbPath, JSON.stringify(init));
 
   return init;
 };
@@ -89,6 +90,7 @@ const login = (pwd: string, pf: PassFile) => {
 
     console.log('goodbye');
   } catch (e) {
+    console.log(e);
     console.log('goodbye');
   }
 })();

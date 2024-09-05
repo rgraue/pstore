@@ -22,7 +22,7 @@ export const handleAdd = async (
     const nickname = await input({ message: 'provide nickname for entry' });
     const username = await input({ message: 'username/email' });
     const p = await password({ message: 'password', mask: '*' });
-    const url = await input({ message: 'url (hit enter if none' });
+    const url = await input({ message: 'url (hit enter if none)' });
 
     const pass: Pass = {
       username: username,
