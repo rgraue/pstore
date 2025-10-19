@@ -77,7 +77,7 @@ const login = (pwd: string, pf: PassFile) => {
           handleGet(pwd, opts, passFile, iv!, salt!);
           break;
         case 'list':
-          handleList(pwd, opts, passFile, iv!, salt!);
+          await handleList(pwd, opts, passFile, iv!, salt!);
           break;
         case 'exit':
           isLoggedIn = !isLoggedIn;

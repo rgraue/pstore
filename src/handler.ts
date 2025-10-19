@@ -1,4 +1,6 @@
+import pMap from 'p-map';
 import {
+  CHECK,
   decryptEntry,
   encryptEntry,
   findEntry,
@@ -51,7 +53,7 @@ export const validateAddOpts = (opts: string[]) => {
   }
 };
 
-export const handleList = (
+export const handleList = async (
   pwd: string,
   opts: string[],
   pf: PassFile,
@@ -60,17 +62,19 @@ export const handleList = (
 ) => {
   try {
     validateListOpts(opts);
-    Object.keys(pf).forEach((val, index, a) => {
-      // try needed due to check entry not folling the similar encryption pattern
-      try {
-        const encryptedEntry = pf[val];
-        const decryptedEntry = decryptEntry(pwd, encryptedEntry, iv, salt);
+    const keys = Object.keys(pf);
 
-        prettyPrintPass(decrypt(pwd, val, iv, salt), decryptedEntry);
-      } catch {
-        null;
-      }
-    });
+    await pMap(keys,
+      (val: string) => {
+        const decryptedKey = decrypt(pwd, val, iv, salt)
+
+        if (decryptedKey !== CHECK) {
+          console.log(decryptedKey)
+        }
+      },
+      {concurrency: 10}
+    )
+
   } catch (e) {
     console.log((e as Error).message);
   }
